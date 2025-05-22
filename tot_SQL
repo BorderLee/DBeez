@@ -1,0 +1,53 @@
+CREATE TABLE Cakes (
+  cake_id 			CHAR(3) PRIMARY KEY,
+  cake_name 		VARCHAR(100),
+  price 			INT,
+  cake_rate 		NUMERIC(2,1) NULL
+);
+
+CREATE TABLE Stores(
+    store_id 		CHAR(5) PRIMARY KEY not null,
+    store_name 		VARCHAR(50) not null, 
+    manager_name 	VARCHAR(20),
+    call 			VARCHAR(15),
+    hours 			VARCHAR(30), 
+    address 		VARCHAR(100),
+    star 			NUMERIC(2,1)
+); 
+
+CREATE TABLE Customers (
+    customer_id 	INT PRIMARY KEY, 
+    customer_name 	VARCHAR(100) NOT NULL, 
+    address 		VARCHAR(255), 
+    phone_number 	VARCHAR(20),
+    email 			VARCHAR(100) 
+  );
+
+CREATE TABLE Reviews
+	(review_num		CHAR(8) PRIMARY KEY, 
+	 customer_id	INT,
+	 star			INT,
+	 cake_id		CHAR(3),
+	 order_num		INT,
+	 store_id		CHAR(5),
+	 foreign key (customer_id) references Customers,
+	 foreign key (cake_id) references Cakes,
+	 foreign key (order_num) references Orders,
+	 foreign key (store_id) references Stores
+	);
+
+--order table
+CREATE TABLE Orders(
+    order_num INT PRIMARY KEY,
+    order_date DATE NOT NULL,
+    customer_id INT,
+    cake_id	CHAR(3),
+    store_id CHAR(5),
+    address VARCHAR(100),
+    price INT,
+    foreign key (customer_id) references Customer,
+    foreign key (cake_id) references Cake,
+    foreign key (store_id) references Store,
+    foreign key (address) references Customers,
+    foreign key (price) references Cakes
+);
