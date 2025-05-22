@@ -36,7 +36,6 @@ CREATE TABLE Reviews
 	 foreign key (store_id) references Stores
 	);
 
---order table
 CREATE TABLE Orders(
     order_num       INT(5) PRIMARY KEY,
     order_date      DATE NOT NULL,
