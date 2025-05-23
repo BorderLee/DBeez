@@ -11,14 +11,14 @@ CREATE TABLE Stores(
     manager_name 	VARCHAR(20),
     store_call 		VARCHAR(15),
     store_hour 		VARCHAR(30), 
-    store_addr 		VARCHAR(100),
+    address 		VARCHAR(100),
     store_rate 		NUMERIC(2,1) NULL
 ); 
 
 CREATE TABLE Customers (
     customer_id 	INT PRIMARY KEY, 
     customer_name 	VARCHAR(100) NOT NULL, 
-    customer_addr 	VARCHAR(255), 
+    address	      VARCHAR(255), 
     phone_number 	VARCHAR(20),
     email 			VARCHAR(100) 
   );
@@ -42,11 +42,9 @@ CREATE TABLE Orders(
     customer_id     INT,
     cake_id	        CHAR(3),
     store_id        CHAR(5),
-    store_addr       VARCHAR(100),
     price           INT,
     foreign key (customer_id) references Customers,
     foreign key (cake_id) references Cakes,
     foreign key (store_id) references Stores,
-    foreign key (customer_addr) references Customers,
     foreign key (price) references Cakes
 );
