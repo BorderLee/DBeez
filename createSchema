@@ -30,21 +30,20 @@ CREATE TABLE Reviews
 	 cake_id		CHAR(3),
 	 order_num		INT (5),
 	 store_id		CHAR(5),
-	 foreign key (customer_id) references Customers,
-	 foreign key (cake_id) references Cakes,
-	 foreign key (order_num) references Orders,
-	 foreign key (store_id) references Stores
+	 foreign key (customer_id) references Customers(customer_id),
+	 foreign key (cake_id) references Cakes(cake_id),
+	 foreign key (order_num) references Orders(order_num),
+	 foreign key (store_id) references Stores(store_id)
 	);
 
 CREATE TABLE Orders(
     order_num       INT(5) PRIMARY KEY,
-    order_date      DATE NOT NULL,
+    order_date      DATETIME NOT NULL,
     customer_id     INT,
     cake_id	        CHAR(3),
     store_id        CHAR(5),
     price           INT,
-    foreign key (customer_id) references Customers,
-    foreign key (cake_id) references Cakes,
-    foreign key (store_id) references Stores,
-    foreign key (price) references Cakes
+    foreign key (customer_id) references Customers(customer_id),
+    foreign key (cake_id) references Cakes(cake_id),
+    foreign key (store_id) references Stores(store_id)
 );
