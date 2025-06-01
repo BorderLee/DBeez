@@ -5,45 +5,55 @@ CREATE TABLE Cakes (
   cake_rate 		NUMERIC(2,1) NULL
 );
 
+CREATE INDEX cakes_index ON Cakes(cake_id);
+
 CREATE TABLE Stores(
-    store_id 		CHAR(5) PRIMARY KEY not null,
-    store_name 		VARCHAR(50) not null, 
-    manager_name 	VARCHAR(20),
-    store_call 		VARCHAR(15),
-    store_hour 		VARCHAR(30), 
-    address 		VARCHAR(100),
-    store_rate 		NUMERIC(2,1) NULL
+  store_id 		CHAR(5) PRIMARY KEY not null,
+  store_name 		VARCHAR(50) not null, 
+  manager_name 	VARCHAR(20),
+  store_call 		VARCHAR(15),
+  store_hour 		VARCHAR(30), 
+  address 		VARCHAR(100),
+  store_rate 		NUMERIC(2,1) NULL
 ); 
 
-CREATE TABLE Customers (
-    customer_id 	INT PRIMARY KEY, 
-    customer_name 	VARCHAR(100) NOT NULL, 
-    address	      VARCHAR(255), 
-    phone_number 	VARCHAR(20),
-    email 			VARCHAR(100) 
-  );
+CREATE INDEX stores_index ON Stores(store_id);
 
-CREATE TABLE Reviews
-	(review_num		CHAR(8) PRIMARY KEY, 
-	 customer_id	INT,
-	 review_rate	NUMERIC(2,1) NULL,
-	 cake_id		CHAR(3),
-	 order_num		INT (5),
-	 store_id		CHAR(5),
-	 foreign key (customer_id) references Customers(customer_id),
-	 foreign key (cake_id) references Cakes(cake_id),
-	 foreign key (order_num) references Orders(order_num),
-	 foreign key (store_id) references Stores(store_id)
-	);
+CREATE TABLE Customers (
+  customer_id 	INT PRIMARY KEY, 
+  customer_name 	VARCHAR(100) NOT NULL, 
+  address	      VARCHAR(255), 
+  phone_number 	VARCHAR(20),
+  email 			VARCHAR(100)
+);
+
+CREATE INDEX customers_index on Customers(customer_id);
+
+CREATE TABLE Reviews( 
+  review_num		CHAR(8) PRIMARY KEY, 
+	customer_id	INT,
+	review_rate	NUMERIC(2,1) NULL,
+	cake_id		CHAR(3),
+	order_num		INT (5),
+	store_id		CHAR(5),
+	foreign key (customer_id) references Customers(customer_id),
+	foreign key (cake_id) references Cakes(cake_id),
+	foreign key (order_num) references Orders(order_num),
+	foreign key (store_id) references Stores(store_id)
+);
+
+CREATE INDEX reviews_index on Reviews(review_num);
 
 CREATE TABLE Orders(
-    order_num       INT(5) PRIMARY KEY,
-    order_date      DATETIME NOT NULL,
-    customer_id     INT,
-    cake_id	        CHAR(3),
-    store_id        CHAR(5),
-    price           INT,
-    foreign key (customer_id) references Customers(customer_id),
-    foreign key (cake_id) references Cakes(cake_id),
-    foreign key (store_id) references Stores(store_id)
+  order_num       INT(5) PRIMARY KEY,
+  order_date      DATETIME NOT NULL,
+  customer_id     INT,
+  cake_id	        CHAR(3),
+  store_id        CHAR(5),
+  price           INT,
+  foreign key (customer_id) references Customers(customer_id),
+  foreign key (cake_id) references Cakes(cake_id),
+  foreign key (store_id) references Stores(store_id)
 );
+
+CREATE INDEX orders_index on Orders(order_num);
