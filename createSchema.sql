@@ -5,6 +5,8 @@ CREATE TABLE Cakes (
   cake_rate 		NUMERIC(2,1) NULL
 );
 
+CREATE INDEX cakes_index ON Cakes(cake_id);
+
 CREATE TABLE Stores(
     store_id 		CHAR(5) PRIMARY KEY not null,
     store_name 		VARCHAR(50) not null, 
@@ -13,7 +15,9 @@ CREATE TABLE Stores(
     store_hour 		VARCHAR(30), 
     address 		VARCHAR(100),
     store_rate 		NUMERIC(2,1) NULL
-); 
+);
+
+CREATE INDEX stores_index ON Stores(store_id);
 
 CREATE TABLE Customers (
     customer_id 	INT PRIMARY KEY, 
@@ -21,7 +25,9 @@ CREATE TABLE Customers (
     address	      VARCHAR(255), 
     phone_number 	VARCHAR(20),
     email 			VARCHAR(100) 
-  );
+);
+
+CREATE INDEX customers_index on Customers(customer_id);
 
 CREATE TABLE Reviews
 	(review_num		CHAR(8) PRIMARY KEY, 
@@ -34,7 +40,9 @@ CREATE TABLE Reviews
 	 foreign key (cake_id) references Cakes(cake_id),
 	 foreign key (order_num) references Orders(order_num),
 	 foreign key (store_id) references Stores(store_id)
-	);
+);
+
+CREATE INDEX reviews_index on Reviews(review_num);
 
 CREATE TABLE Orders(
     order_num       INT(5) PRIMARY KEY,
@@ -47,6 +55,8 @@ CREATE TABLE Orders(
     foreign key (cake_id) references Cakes(cake_id),
     foreign key (store_id) references Stores(store_id)
 );
+
+CREATE INDEX orders_index on Orders(order_num);
 
 -- view (cake rating 계산)
 CREATE VIEW cake_rate_cal AS
