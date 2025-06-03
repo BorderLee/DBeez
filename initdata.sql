@@ -15,16 +15,16 @@ INSERT INTO Customers (customer_id, customer_name, address, phone_number, email)
 
 -- 케이크
 INSERT INTO Cakes (cake_id, cake_name, price) VALUES
-	('001', 'Chocolate Cake', 35000, 5.0),
-	('002', 'Vanilla Cake', 32000, 5.0),
-	('003', 'Red Velvet Cake', 27000, 5.0),
-	('004', 'Lemon Cake', 24000, 4.0),
-	('005', 'Salted Caramel Cake', 28000, 4.0),
-	('006', 'Cheese Cake', 25000, 4.0),
-	('007', 'Matcha Cake', 28000, 3.0),
-	('008', 'Blueberry Cake', 33000, 3.0),
-	('009', 'Cherry Cake', 26500, 3.0),
-	('010', 'Peach Cake', 34500, 2.0);
+	('001', 'Chocolate Cake', 35000),
+	('002', 'Vanilla Cake', 32000),
+	('003', 'Red Velvet Cake', 27000),
+	('004', 'Lemon Cake', 24000),
+	('005', 'Salted Caramel Cake', 28000),
+	('006', 'Cheese Cake', 25000),
+	('007', 'Matcha Cake', 28000),
+	('008', 'Blueberry Cake', 33000),
+	('009', 'Cherry Cake', 26500),
+	('010', 'Peach Cake', 34500);
 
 -- 지점
 INSERT INTO Stores (store_id, store_name, manager_name, store_call, store_hour, address, store_rate)VALUES 
