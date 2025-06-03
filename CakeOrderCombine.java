@@ -5,9 +5,9 @@ import java.util.Scanner;
 
 public class CakeOrderCombine {
     public static void main(String[] args) {
-        String dbid="testdb";
+        String dbid="cakedb";
         String userid="root";
-        String passwd="emily0609^^";
+        String passwd="zoe9559";
         String url="jdbc:mysql://localhost:3306/"+dbid;
 
         try (Connection conn=DriverManager.getConnection(url,userid,passwd)){
@@ -499,176 +499,201 @@ public class CakeOrderCombine {
     }
 
     // update - 영서
-    public static void updateCustomerInfo(Connection conn, Scanner scanner){
-
-        try(Statement stmt = conn.createStatement();){
-                //비워두고 나중에 사용자 입력값 넣기
-            String sql_cus = "UPDATE Customers "
+    //고객 정보 업데이트 
+    public static void updateCustomerInfo(Connection conn, Scanner scanner) {
+    	
+    		String sql_cus = "UPDATE Customers "
                     +" SET customer_name = ?, address = ?, phone_number = ?, email = ? WHERE customer_name = ?";
-            
+    		String check_cus = "SELECT * from Customers WHERE customer_name = ?";
+    		String ori_name; 
+    		
+    		try(PreparedStatement pstmt = conn.prepareStatement(sql_cus)){
+    	
+    			while(true) { 
+    				System.out.println("~~~Check Your Information~~~\rEnter your name please. (ex: 홍길동)>>");
+    	              ori_name = scanner.nextLine();
 
-            String check_cus = "SELECT * from Customers WHERE customer_name = ?";
-            PreparedStatement pStmt = conn.prepareStatement(sql_cus);
-            while(true) {
-                //고객 정보 변경 인풋 받기
-                System.out.println("Enter your name please. >>");
-                String ori_name = scanner.nextLine();
+    	              try (PreparedStatement checkStmt = conn.prepareStatement(check_cus)) {
+    	                  checkStmt.setString(1, ori_name);  // 새 이름 기준으로 SELECT
 
-                try (PreparedStatement checkStmt = conn.prepareStatement(check_cus)) {
-                    checkStmt.setString(1, ori_name);  // 새 이름 기준으로 SELECT
+    	                  try (ResultSet rs = checkStmt.executeQuery()){ //입력한 이름이 디비에 없을 경우
+    	                      if (!rs.next()) {
+    	                          System.out.println("No Name in DB"); //오류문 출력 
+    	                          System.out.println(""); 
+    	                          continue; //다시 묻기 
+    	                      }
+    	                      else {
+    	                    	  break; //다음 단계
+    	                      }
+    	                  }catch(SQLException sqle) {
+    	                      System.out.println("SQLException: "+sqle);
+    	                  }
+    	              }
+    			}
+                  
+                //업데이트 시작 
+                  System.out.println("~~~Updating starts. Please enter your new information.~~~\r\n");
 
-                    try (ResultSet rs = checkStmt.executeQuery()){ //입력한 이름이 디비에 없을 경우
-                        if (!rs.next()) {
-                            System.out.println("No Name in DB");
-                            continue;  //다시 이름 물어보기
-                        }
+                  System.out.println("Enter your NEW NAME please. (ex: 홍길동) >>");
+                  String customer_name = scanner.nextLine();
 
+                  System.out.println("Enter your NEW ADDRESS please. (공백 허용) >>");
+                  String address = scanner.nextLine();
 
-                    }catch(SQLException sqle) {
-                        System.out.println("SQLException: "+sqle);
-                    }
+                  System.out.println("Enter your NEW PHONE NUMBER please. (ex: 000-0000-0000) >>");
+                  String phone_number = scanner.nextLine();
 
-                    System.out.println("~~~Updating starts. Please enter your new information.~~~\r\n");
+                  System.out.println("Enter your NEW EMAIL please. (ex: aa@gmail.com) >>");
+                  String email = scanner.nextLine();
 
-                    System.out.println("Enter your NEW NAME please. >>");
-                    String customer_name = scanner.nextLine();
+                  //내용 update(변경) sql
+                  try {
+                      conn.setAutoCommit(false); //transaction 시작
+                      pstmt.setString(1, customer_name);
+                      pstmt.setString(2, address);
+                      pstmt.setString(3, phone_number);
+                      pstmt.setString(4, email);
+                      pstmt.setString(5, ori_name);
+                      pstmt.executeUpdate();  //함수 실행
 
-                    System.out.println("Enter your NEW ADDRESS please. >>");
-                    String address = scanner.nextLine();
+                      conn.commit();
+                  }catch(SQLException e) {
+                      conn.rollback();
+                  }finally {
+                      conn.setAutoCommit(true);
+                  }
 
-                    System.out.println("Enter your NEW PHONE NUMBER please. >>");
-                    String phone_number = scanner.nextLine();
+                  //터미널 출력
+                  String selectSql = "SELECT * FROM Customers WHERE customer_name = ?";
+                  try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
+                      selectStmt.setString(1, customer_name);  // 새 이름 기준으로 SELECT
 
-                    System.out.println("Enter your NEW EMAIL please. >>");
-                    String email = scanner.nextLine();
+                      try (ResultSet rs = selectStmt.executeQuery()) {
+                          System.out.println("====================================================================================");
+                          System.out.printf("%-12s| %-15s| %-20s| %-18s| %-30s\n", "customer_id","customer_name","address","phone_number","email"); // 헤더 출력
 
-                    //내용 update(변경) sql
-                    try {
-                        conn.setAutoCommit(false); //transaction 시작
-                        pStmt.setString(1, customer_name);
-                        pStmt.setString(2, address);
-                        pStmt.setString(3, phone_number);
-                        pStmt.setString(4, email);
-                        pStmt.setString(5, ori_name);
-                        pStmt.executeUpdate();  //함수 실행
+                          System.out.println("------------------------------------------------------------------------------------");
 
-                        conn.commit();
-                    }catch(SQLException e) {
-                        conn.rollback();
-                    }finally {
-                        conn.setAutoCommit(true);
-                    }
+                          while (rs.next()) {
 
-                    //터미널 출력
-                    String selectSql = "SELECT * FROM Customers WHERE customer_name = ?";
-                    try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
-                        selectStmt.setString(1, customer_name);  // 새 이름 기준으로 SELECT
+                              String id = rs.getString("customer_id");
+                              String name = rs.getString("customer_name");
+                              String addr = rs.getString("address");
+                              String phone = rs.getString("phone_number");
+                              String em = rs.getString("email");
+                              System.out.printf("%-12s| %-14s| %-19s| %-17s| %-30s\n",
+                                      id,name, addr, phone, em);
 
-                        try (ResultSet rs = selectStmt.executeQuery()) {
-                            System.out.println("====================================================================================");
-                            System.out.printf("%-12s| %-15s| %-20s| %-18s| %-30s\n", "customer_id","customer_name","address","phone_number","email"); // 헤더 출력
-
-                            System.out.println("------------------------------------------------------------------------------------");
-
-                            while (rs.next()) {
-
-                                String id = rs.getString("customer_id");
-                                String name = rs.getString("customer_name");
-                                String addr = rs.getString("address");
-                                String phone = rs.getString("phone_number");
-                                String em = rs.getString("email");
-                                System.out.printf("%-12s| %-14s| %-19s| %-17s| %-30s\n",
-                                        id,name, addr, phone, em);
-
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        }catch(SQLException sqle){ //오류 날 경우 처리
-            System.out.println("SQLException : "+sqle);
-        }
-    }
-
-    public static void updateCakeInfo(Connection conn, Scanner scanner){
-        try(Statement stmt = conn.createStatement();){
+                          }
+                      }catch(SQLException sqle){ //오류 날 경우 처리
+                              System.out.println("SQLException : "+sqle);
+                          }
+                 
+              }catch(SQLException sqle){ //오류 날 경우 처리
+                  System.out.println("SQLException : "+sqle);
+                  }
+              }catch(SQLException sqle){ //오류 날 경우 처리
+                  System.out.println("SQLException : "+sqle);
+              	}
+    		}
+    	
+    	
+    //케이크 정보 업데이트 
+    public static void updateCakeInfo(Connection conn, Scanner scanner ) {
+      
             String sql_sell = "UPDATE Cakes "
                     +" SET cake_name = ?, price = ? WHERE cake_name = ?";
+
             String check_cake = "SELECT * from Cakes WHERE cake_name = ?";
-            PreparedStatement pStmt = conn.prepareStatement(sql_sell);
-            while(true){
-                //케이크 정보 변경 인풋 받기
-                System.out.println("Enter CAKE NAME please.");
-                String ori_name = scanner.nextLine();
+            String ori_name; 
 
-                try (PreparedStatement checkStmt = conn.prepareStatement(check_cake)) {
-                    checkStmt.setString(1, ori_name);  // 새 이름 기준으로 SELECT
+            try (PreparedStatement pstmt = conn.prepareStatement(sql_sell)) {
+            	
+            	
+            	while(true) {
+            		System.out.println("~~~Check Cake Information~~~\rEnter CAKE NAME please. (ex: Chocolate Cake) >>");
+                    ori_name = scanner.nextLine();
 
-                    try (ResultSet rs = checkStmt.executeQuery()){ //입력한 이름이 디비에 없을 경우
-                        if (!rs.next()) {
-                            System.out.println("No Cake name in DB");
-                            continue;  //다시 이름 물어보기
+    	              try (PreparedStatement checkStmt = conn.prepareStatement(check_cake)) {
+    	                  checkStmt.setString(1, ori_name);  // 새 이름 기준으로 SELECT
+
+    	                  try (ResultSet rs = checkStmt.executeQuery()){ //입력한 이름이 디비에 없을 경우
+    	                      if (!rs.next()) {
+    	                          System.out.println("No Cake in DB");//오류문 출력 
+    	                          continue; 
+    	                      }
+    	                      else {
+    	                    	  break; 
+    	                      }
+    	                  }catch(SQLException sqle) {
+    	                      System.out.println("SQLException: "+sqle);
+    	                  }
+    	              }
+            	}
+    	              
+                	              
+                    //케이크 정보 변경 인풋 받기
+
+                        System.out.println("~~~Updating starts. Please enter your new information.~~~\r\n");
+
+                        System.out.println("Enter NEW CAKE NAME please. (ex: Cheese Cake) >>");
+                        String cake_name = scanner.nextLine();
+
+                        System.out.println("Enter NEW CAKE PRICE please. (ex: 10000) >>");
+                        int price = scanner.nextInt();
+                        scanner.nextLine();
+
+
+                        //내용 update(변경) sql
+                        try {
+                            conn.setAutoCommit(false);
+                            pstmt.setString(1, cake_name);
+                            pstmt.setInt(2, price);
+                            pstmt.setString(3, ori_name);
+
+                            pstmt.executeUpdate(); //함수 실행
+                            conn.commit();
+                        }catch(SQLException e) {
+                            conn.rollback();
+                        }finally {
+                            conn.setAutoCommit(true);
                         }
-                    }catch(SQLException sqle) {
-                        System.out.println("SQLException: "+sqle);
-                    }
 
-                    System.out.println("~~~Updating starts. Please enter your new information.~~~\r\n");
+                        //터미널 출력
 
-                    System.out.println("Enter NEW CAKE NAME please.");
-                    String cake_name = scanner.nextLine();
+                        String selectSql = "SELECT * FROM Cakes WHERE cake_name = ?";
+                        try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
+                            selectStmt.setString(1, cake_name);  // 새 이름 기준으로 SELECT
+                            try (ResultSet rs = selectStmt.executeQuery()) {
+                                System.out.println("====================================================================");
+                                System.out.printf("%-12s| %-28s| %-20s \n","cake_id","cake_name","cake_price"); // 헤더 출력"
 
-                    System.out.println("Enter NEW CAKE PRICE please.");
-                    int price = scanner.nextInt();
-                    scanner.nextLine();
-
-
-                    //내용 update(변경) sql
-                    try {
-                        conn.setAutoCommit(false);
-                        pStmt.setString(1, cake_name);
-                        pStmt.setInt(2, price);
-                        pStmt.setString(3, ori_name);
-
-                        pStmt.executeUpdate(); //함수 실행
-                        conn.commit();
-                    }catch(SQLException e) {
-                        conn.rollback();
-                    }finally {
-                        conn.setAutoCommit(true);
-                    }
-
-                    //터미널 출력
-                    String selectSql = "SELECT * FROM Cakes WHERE cake_name = ?";
-                    try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
-                        selectStmt.setString(1, cake_name);  // 새 이름 기준으로 SELECT
-                        try (ResultSet rs = selectStmt.executeQuery()) {
-                            System.out.println("====================================================================");
-                            System.out.printf("%-12s| %-28s| %-20s| %-18s \n","cake_id","cake_name","cake_price","cake_rate"); // 헤더 출력"
-
-                            System.out.println("--------------------------------------------------------------------");
+                                System.out.println("--------------------------------------------------------------------");
 
 
-                            while (rs.next()) {
-                                String id = rs.getString("cake_id");
-                                String name = rs.getString("cake_name");
-                                int cake_price = rs.getInt("price");
-                                float cake_rate = rs.getFloat("cake_rate");
+                                while (rs.next()) {
+                                    String id = rs.getString("cake_id");
+                                    String name = rs.getString("cake_name");
+                                    int cake_price = rs.getInt("price");
+                                    
 
-                                System.out.printf("%-12s| %-28s| %-20s| %-18s \n",
-                                        id, name, cake_price, cake_rate);
-                            }
-                            break;
+                                    System.out.printf("%-12s| %-28s| %-20s \n",
+                                            id, name, cake_price);
+
+                                }
+                               
+                            }catch(SQLException sqle){ //오류 날 경우 처리
+                                System.out.println("SQLException : "+sqle);
                         }
+                    }catch(SQLException sqle){ //오류 날 경우 처리
+                        System.out.println("SQLException : "+sqle);
                     }
-                }
-                    
+            }catch(SQLException sqle){ //오류 날 경우 처리
+                System.out.println("SQLException : "+sqle);
+            	}
             }
-        }catch(SQLException sqle){ //오류 날 경우 처리
-            System.out.println("SQLException : "+sqle);
-        }
-    }
+                
+
 
     /**
      * 판매자 - 특정 가게의 전체 주문 목록을 조회하고 콘솔에 출력하는 메서드
