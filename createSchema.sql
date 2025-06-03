@@ -59,8 +59,8 @@ CREATE INDEX reviews_index on Reviews(review_num);
 
 -- view (cake rating 계산)
 CREATE VIEW cake_rate_cal AS
-SELECT c.cake_name AS cake_name, c.price AS price, ROUND(SUM(r.review_rate)/COUNT(r.cake_id),1) AS cake_rate
-FROM Cakes c JOIN Reviews r ON c.cake_id=r.cake_id
+SELECT c.cake_name AS cake_name, c.price AS price, ROUND(IFNULL(SUM(r.review_rate)/COUNT(r.cake_id),0.0)1) AS cake_rate
+FROM Cakes c LEFT JOIN Reviews r ON c.cake_id=r.cake_id
 GROUP BY c.cake_id;
 
 -- view (customer_name으로 리뷰 조회: 구매자, 케이크명, 별점 나오도록)
