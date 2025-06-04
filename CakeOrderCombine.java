@@ -5,9 +5,9 @@ import java.util.Scanner;
 
 public class CakeOrderCombine {
     public static void main(String[] args) {
-        String dbid="cakedb";
+        String dbid="dbeez";
         String userid="root";
-        String passwd="zoe9559";
+        String passwd="jeeinmin2004!!";
         String url="jdbc:mysql://localhost:3306/"+dbid;
 
         try (Connection conn=DriverManager.getConnection(url,userid,passwd)){
@@ -83,8 +83,8 @@ public class CakeOrderCombine {
         System.out.println("-------------------------------");
         System.out.println(" MAIN MENU ");
         System.out.println("-------------------------------");
-        System.out.println("1. Seller Menu");
-        System.out.println("2. Buyer Menu");
+        System.out.println("1. Manager Menu");
+        System.out.println("2. Customer Menu");
         System.out.println("0. Exit");
         System.out.println("-------------------------------");
         System.out.print("Enter your choice: ");
@@ -109,7 +109,7 @@ public class CakeOrderCombine {
     // 판매자 상세 메뉴를 콘솔에 출력하는 메서드
     private static void printSellerSubMenu() {
         System.out.println("-------------------------------");
-        System.out.println(" SELLER MENU ");
+        System.out.println(" Manager MENU ");
         System.out.println("-------------------------------");
         System.out.println("0. Back");
         System.out.println("1. View All Orders for My Store");
@@ -123,7 +123,7 @@ public class CakeOrderCombine {
     }
     private static void printBuyerSubMenu() {
         System.out.println("-------------------------------");
-        System.out.println(" BUYER MENU ");
+        System.out.println(" Customer MENU ");
         System.out.println("-------------------------------");
         System.out.println("0. Back");
         System.out.println("1. Order Cakes");
@@ -266,7 +266,7 @@ public class CakeOrderCombine {
     // Order Cake
     public static void cakeOrder(Connection conn, Scanner scanner){
         // if cakeOrder
-        System.out.println("[Order Cakes]\n");
+        System.out.println("\n[Order Cakes]\n");
         try(Statement stmt=conn.createStatement();) {
             PreparedStatement pStmt = conn.prepareStatement(
                     "insert into orders (order_num, order_date, customer_id, cake_id, store_id, price) "
@@ -309,14 +309,14 @@ public class CakeOrderCombine {
             rset = stmt.executeQuery("select * from cakes");
             System.out.println("\n<< CAKES >>");
             System.out.println("==============================================");
-            System.out.println(" Cake id | Cake               | Price");
+            System.out.println(" Cake id | Cake                | Price");
             System.out.println("----------------------------------------------");
 
             // Cakes table empty check
             boolean foundResults = false;
             while (rset.next()) {
                 foundResults = true;
-                System.out.printf(" %-7s | %-18s | %d\n",
+                System.out.printf(" %-7s | %-19s | %d\n",
                         rset.getString(1), rset.getString(2), rset.getInt(3));
             }
             if(!foundResults) {
@@ -476,7 +476,7 @@ public class CakeOrderCombine {
             //rate 반영 - update로 해야 함
             try {
                 conn.setAutoCommit(false); // transaction 시작
-                System.out.println(store_id);
+                //System.out.println(store_id);
                 tmpStmt = conn.prepareStatement("update Stores "
                                 + "set store_rate = ("
                                 + "select avg(review_rate) "
@@ -510,7 +510,7 @@ public class CakeOrderCombine {
     		try(PreparedStatement pstmt = conn.prepareStatement(sql_cus)){
     	
     			while(true) { 
-    				System.out.println("~~~Check Your Information~~~\rEnter your name please. (ex: 홍길동)>>");
+    				System.out.print("~~~Check Your Information~~~\rEnter your name please. (ex: 홍길동)>>");
     	              ori_name = scanner.nextLine();
 
     	              try (PreparedStatement checkStmt = conn.prepareStatement(check_cus)) {
@@ -534,16 +534,16 @@ public class CakeOrderCombine {
                 //업데이트 시작 
                   System.out.println("~~~Updating starts. Please enter your new information.~~~\r\n");
 
-                  System.out.println("Enter your NEW NAME please. (ex: 홍길동) >>");
+                  System.out.print("Enter your NEW NAME please. (ex: 홍길동) >>");
                   String customer_name = scanner.nextLine();
 
-                  System.out.println("Enter your NEW ADDRESS please. (공백 허용) >>");
+                  System.out.print("Enter your NEW ADDRESS please. (공백 허용) >>");
                   String address = scanner.nextLine();
 
-                  System.out.println("Enter your NEW PHONE NUMBER please. (ex: 000-0000-0000) >>");
+                  System.out.print("Enter your NEW PHONE NUMBER please. (ex: 000-0000-0000) >>");
                   String phone_number = scanner.nextLine();
 
-                  System.out.println("Enter your NEW EMAIL please. (ex: aa@gmail.com) >>");
+                  System.out.print("Enter your NEW EMAIL please. (ex: aa@gmail.com) >>");
                   String email = scanner.nextLine();
 
                   //내용 update(변경) sql
@@ -569,10 +569,10 @@ public class CakeOrderCombine {
                       selectStmt.setString(1, customer_name);  // 새 이름 기준으로 SELECT
 
                       try (ResultSet rs = selectStmt.executeQuery()) {
-                          System.out.println("====================================================================================");
-                          System.out.printf("%-12s| %-15s| %-20s| %-18s| %-30s\n", "customer_id","customer_name","address","phone_number","email"); // 헤더 출력
+                          System.out.println("======================================================================================================");
+                          System.out.printf("%-12s| %-15s| %-34s| %-17s| %-30s\n", "customer_id","customer_name","address","phone_number","email"); // 헤더 출력
 
-                          System.out.println("------------------------------------------------------------------------------------");
+                          System.out.println("------------------------------------------------------------------------------------------------------");
 
                           while (rs.next()) {
 
@@ -581,10 +581,12 @@ public class CakeOrderCombine {
                               String addr = rs.getString("address");
                               String phone = rs.getString("phone_number");
                               String em = rs.getString("email");
-                              System.out.printf("%-12s| %-14s| %-19s| %-17s| %-30s\n",
+                              System.out.printf("%-12s| %-12s| %-22s| %-17s| %-30s\n",
                                       id,name, addr, phone, em);
 
                           }
+                          System.out.println("======================================================================================================");
+
                       }catch(SQLException sqle){ //오류 날 경우 처리
                               System.out.println("SQLException : "+sqle);
                           }
@@ -611,7 +613,7 @@ public class CakeOrderCombine {
             	
             	
             	while(true) {
-            		System.out.println("~~~Check Cake Information~~~\rEnter CAKE NAME please. (ex: Chocolate Cake) >>");
+            		System.out.print("~~~Check Cake Information~~~\rEnter CAKE NAME please. (ex: Chocolate Cake) >>");
                     ori_name = scanner.nextLine();
 
     	              try (PreparedStatement checkStmt = conn.prepareStatement(check_cake)) {
@@ -636,10 +638,10 @@ public class CakeOrderCombine {
 
                         System.out.println("~~~Updating starts. Please enter your new information.~~~\r\n");
 
-                        System.out.println("Enter NEW CAKE NAME please. (ex: Cheese Cake) >>");
+                        System.out.print("Enter NEW CAKE NAME please. (ex: Cheese Cake) >>");
                         String cake_name = scanner.nextLine();
 
-                        System.out.println("Enter NEW CAKE PRICE please. (ex: 10000) >>");
+                        System.out.print("Enter NEW CAKE PRICE please. (ex: 10000) >>");
                         int price = scanner.nextInt();
                         scanner.nextLine();
 
@@ -681,6 +683,8 @@ public class CakeOrderCombine {
                                             id, name, cake_price);
 
                                 }
+
+                                System.out.println("====================================================================");
                                
                             }catch(SQLException sqle){ //오류 날 경우 처리
                                 System.out.println("SQLException : "+sqle);
@@ -730,10 +734,10 @@ public class CakeOrderCombine {
             try (ResultSet rs = pstmt.executeQuery()) {
 
                 // 5. 쿼리 실행 결과(ResultSet) 처리 및 콘솔 출력
-                System.out.println("=============================================================");
-                System.out.printf(" %-8s | %-10s | %-12s | %-15s | %s\n",
+                System.out.println("=================================================================================");
+                System.out.printf(" %-8s | %-19s | %-15s | %-20s | %s\n",
                         "Order #", "Order Date", "Customer Name", "Cake Name", "Price"); // 영문 출력 헤더
-                System.out.println("-------------------------------------------------------------");
+                System.out.println("---------------------------------------------------------------------------------");
 
                 boolean foundResults = false; // 조회된 결과가 있는지 확인 플래그
                 while (rs.next()) { // 결과 행 반복
@@ -746,7 +750,7 @@ public class CakeOrderCombine {
                     int orderPrice = rs.getInt("order_price");
 
                     // 가져온 데이터 출력
-                    System.out.printf(" %-8d | %-10s | %-12s | %-15s | %d\n",
+                    System.out.printf(" %-8d | %-10s | %-12s | %-20s | %d\n",
                             orderNum, orderDate, customerName, cakeName, orderPrice);
                 }
 
@@ -755,7 +759,7 @@ public class CakeOrderCombine {
                     System.out.println(" No order history found for this store."); // 영문 출력
                 }
 
-                System.out.println("=============================================================");
+                System.out.println("=================================================================================");
 
             } // 내부 try 블록 종료 시 ResultSet 자동 닫힘
 
@@ -798,10 +802,10 @@ public class CakeOrderCombine {
             try (ResultSet rs = pstmt.executeQuery()) {
 
                 // 5. 쿼리 실행 결과(ResultSet) 처리 및 콘솔 출력
-                System.out.println("===============================================");
+                System.out.println("=========================================================");
                 System.out.printf(" %-10s | %-6s | %-10s | %s\n",
                         "Review #", "Rating", "Customer", "Cake Name"); // 영문 출력 헤더
-                System.out.println("-----------------------------------------------");
+                System.out.println("---------------------------------------------------------");
 
                 boolean foundResults = false;
                 while (rs.next()) {
@@ -811,14 +815,14 @@ public class CakeOrderCombine {
                     String customerName = rs.getString("customer_name");
                     String cakeName = rs.getString("cake_name");
 
-                    System.out.printf(" %-10s | %.1f  | %-10s | %s\n",
+                    System.out.printf(" %-10s | %5.1f  | %-7s | %s\n",
                             reviewNum, reviewRate, customerName, cakeName); // 별점 출력 포맷 조정
                 }
 
                 if (!foundResults) {
                     System.out.println(" No reviews found for this store."); // 영문 출력
                 }
-                System.out.println("===============================================");
+                System.out.println("=========================================================");
 
             } // 내부 try 블록 종료 시 ResultSet 자동 닫힘
 
@@ -1018,7 +1022,7 @@ public class CakeOrderCombine {
     }
 
     public static void deleteReviews(Connection conn, Scanner scanner) {
-        System.out.println("Enter review number to delete:");
+        System.out.print("Enter review number to delete:");
         int review_num = scanner.nextInt();          
 
         String sql = "DELETE FROM cakes WHERE review_num = ?";
@@ -1041,7 +1045,7 @@ public class CakeOrderCombine {
     }
 
     public static void deleteOrders(Connection conn, Scanner scanner) {
-        System.out.println("Enter order_num to delete:");
+        System.out.print("Enter order_num to delete:");
         int order_num = scanner.nextInt();                  
 
         String sql = "DELETE FROM cakes WHERE store_id = ?";
