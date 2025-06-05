@@ -698,36 +698,36 @@ public class CakeOrderCombine {
             }
     
     //delete 이다은
-    public static void deleteCake() {
-        System.out.print("Enter cake ID to delete: ");
-        String input = scanner.nextLine();
-
-        String url = "jdbc:mysql://localhost:3306/dbeez";  
-        String user = "root";                   
-        String password = "0000";
-
-        String sql = "DELETE FROM cakes WHERE cake_id = ?";
-        String aftersql = "SELECT * FROM cakes";
-
-        try (
-            Connection conn = DriverManager.getConnection(url, user, password);
-            PreparedStatement pstmtDelete = conn.prepareStatement(sql);
-            Statement stmt = conn.createStatement()
-        ) {
-            pstmtDelete.setString(1, input);
-            int affectedRows = pstmtDelete.executeUpdate();
-
-            if (affectedRows > 0) {
-                System.out.println(input + " successfully deleted!");
-            } else {
-                System.out.println(input + " doesn't exist!");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error occurred. Please try again: " + e.getMessage());
-        } 
-    }
+	public static void deleteCake(Connection conn, Scanner scanner) {
+	        System.out.print("Enter cake ID to delete: ");
+	        String input = scanner.nextLine();
+	
+	        String url = "jdbc:mysql://localhost:3306/dbeez";  
+	        String user = "root";                   
+	        String password = "0000";
+	
+	        String sql = "DELETE FROM cakes WHERE cake_id = ?";
+	        String aftersql = "SELECT * FROM cakes";
+	
+	        try (
+	            Connection conn = DriverManager.getConnection(url, user, password);
+	            PreparedStatement pstmtDelete = conn.prepareStatement(sql);
+	            Statement stmt = conn.createStatement()
+	        ) {
+	            pstmtDelete.setString(1, input);
+	            int affectedRows = pstmtDelete.executeUpdate();
+	
+	            if (affectedRows > 0) {
+	                System.out.println(input + " successfully deleted!");
+	            } else {
+	                System.out.println(input + " doesn't exist!");
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Error occurred. Please try again: " + e.getMessage());
+	        } 
+	}
     
-	public static void deleteCustomer() {
+	public static void deleteCustomer(Connection conn, Scanner scanner) {
 	    System.out.print("Enter customer ID to delete: ");
 	    int input = scanner.nextInt();
 	
@@ -758,7 +758,7 @@ public class CakeOrderCombine {
 	    } 
 	}
 
-    public static void deleteOrder() {
+	public static void deleteOrder(Connection conn, Scanner scanner) {
 	    System.out.print("Enter order number to delete: ");
 	    int input = scanner.nextInt();
 	
@@ -788,7 +788,7 @@ public class CakeOrderCombine {
 	    } 
 	}
     
-	public static void deleteReview() {;
+	public static void deleteReview(Connection conn, Scanner scanner) {;
 	    System.out.print("Enter review number to delete: ");
 	    int input = scanner.nextInt();
 	
@@ -818,7 +818,7 @@ public class CakeOrderCombine {
 	    } 
 	}
     
-    public static void deleteStore() {
+	public static void deleteStore(Connection conn, Scanner scanner) {
     	    System.out.print("Enter review store ID delete: ");
     	    String input = scanner.nextLine();
     	
@@ -846,7 +846,7 @@ public class CakeOrderCombine {
     	    } catch (SQLException e) {
     	        System.out.println("Error occured. Please try again: " + e.getMessage());
     	    } 
-    }
+	}
 
     /**
      * 판매자 - 특정 가게의 전체 주문 목록을 조회하고 콘솔에 출력하는 메서드
