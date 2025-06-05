@@ -5,9 +5,9 @@ import java.util.Scanner;
 
 public class CakeOrderCombine {
     public static void main(String[] args) {
-        String dbid="dbeez";
+        String dbid="cakedb";
         String userid="root";
-        String passwd="jeeinmin2004!!";
+        String passwd="zoe9559";
         String url="jdbc:mysql://localhost:3306/"+dbid;
 
         try (Connection conn=DriverManager.getConnection(url,userid,passwd)){
@@ -166,7 +166,7 @@ public class CakeOrderCombine {
                     break;
                 case 5: // 5. 지점 정보 삭제 기능
                     // 지점 데이터 delete 메서드 호출
-                    deleteStores(conn, scanner);
+                    deleteStore(conn, scanner);
                     break;
                 case 6: // 6. 케이크 정보 삭제 기능
                     // 케이크 데이터 delete 메서드 호출
@@ -214,11 +214,11 @@ public class CakeOrderCombine {
                     break;
                 case 7: // 7. 리뷰 삭제 기능
                     // 리뷰 데이터 delete 메서드 호출
-                    deleteReviews(conn, scanner);
+                    deleteReview(conn, scanner);
                     break;
                 case 8: // 8. 주문 취소 기능 - 이게 구매자 기능이 맞을까요?!
                     // 주문 데이터 del3te 메서드 호출
-                    deleteOrders(conn, scanner);
+                    deleteOrder(conn, scanner);
                     break;
                 default:
                     System.out.println("Invalid choice. Please enter again.");
@@ -698,48 +698,42 @@ public class CakeOrderCombine {
             }
     
     //delete 이다은
-	public static void deleteCake(Connection conn, Scanner scanner) {
-	        System.out.print("Enter cake ID to delete: ");
-	        String input = scanner.nextLine();
-	
-	        String url = "jdbc:mysql://localhost:3306/dbeez";  
-	        String user = "root";                   
-	        String password = "0000";
-	
-	        String sql = "DELETE FROM cakes WHERE cake_id = ?";
-	        String aftersql = "SELECT * FROM cakes";
-	
-	        try (
-	            Connection conn = DriverManager.getConnection(url, user, password);
-	            PreparedStatement pstmtDelete = conn.prepareStatement(sql);
-	            Statement stmt = conn.createStatement()
-	        ) {
-	            pstmtDelete.setString(1, input);
-	            int affectedRows = pstmtDelete.executeUpdate();
-	
-	            if (affectedRows > 0) {
-	                System.out.println(input + " successfully deleted!");
-	            } else {
-	                System.out.println(input + " doesn't exist!");
-	            }
-	        } catch (SQLException e) {
-	            System.out.println("Error occurred. Please try again: " + e.getMessage());
-	        } 
-	}
+    public static void deleteCake(Connection conn, Scanner scanner) {
+        System.out.print("Enter cake ID to delete: ");
+        String input = scanner.nextLine();
+        String sql = "DELETE FROM Cakes WHERE cake_id = ?";
+        String aftersql = "SELECT * FROM cakes";
+
+        try {
+           
+            PreparedStatement pstmtDelete = conn.prepareStatement(sql);
+            Statement stmt = conn.createStatement();
+        
+            pstmtDelete.setString(1, input);
+            int affectedRows = pstmtDelete.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println(input + " successfully deleted!");
+            } else {
+                System.out.println(input + " doesn't exist!");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error occurred. Please try again: " + e.getMessage());
+        } 
+    }
+    
+    
     
 	public static void deleteCustomer(Connection conn, Scanner scanner) {
 	    System.out.print("Enter customer ID to delete: ");
 	    int input = scanner.nextInt();
 	
-	    String url = "jdbc:mysql://localhost:3306/dbeez";  
-	    String user = "root";                   
-	    String password = "0000";
 	
-	    String sql = "DELETE FROM customers WHERE customer_id = ?";
+	    String sql = "DELETE FROM Customers WHERE customer_id = ?";
 	    String aftersql = "SELECT * FROM customers ";
 	    
 	    try {
-	        Connection conn = DriverManager.getConnection(url, user, password);
+	       
 	        PreparedStatement pstmt = conn.prepareStatement(sql);
             Statement stmt = conn.createStatement();
 
@@ -762,15 +756,12 @@ public class CakeOrderCombine {
 	    System.out.print("Enter order number to delete: ");
 	    int input = scanner.nextInt();
 	
-	    String url = "jdbc:mysql://localhost:3306/dbeez";  
-	    String user = "root";                   
-	    String password = "0000";
 	
-	    String sql = "DELETE FROM orders WHERE order_num = ?";
+	    String sql = "DELETE FROM Orders WHERE order_num = ?";
 	    String aftersql = "SELECT * FROM orders ";
 	    
 	    try {
-	        Connection conn = DriverManager.getConnection(url, user, password);
+	      
 	        PreparedStatement pstmt = conn.prepareStatement(sql);
             Statement stmt = conn.createStatement();
 
@@ -792,15 +783,13 @@ public class CakeOrderCombine {
 	    System.out.print("Enter review number to delete: ");
 	    int input = scanner.nextInt();
 	
-	    String url = "jdbc:mysql://localhost:3306/dbeez";  
-	    String user = "root";                   
-	    String password = "0000";
+	  
 	
 	    String sql = "DELETE FROM reviews WHERE review_num = ?";
 	    String aftersql = "SELECT * FROM reviews ";
 	    
 	    try {
-	        Connection conn = DriverManager.getConnection(url, user, password);
+
 	        PreparedStatement pstmt = conn.prepareStatement(sql);
             Statement stmt = conn.createStatement();
 
@@ -822,15 +811,11 @@ public class CakeOrderCombine {
     	    System.out.print("Enter review store ID delete: ");
     	    String input = scanner.nextLine();
     	
-    	    String url = "jdbc:mysql://localhost:3306/dbeez";  
-    	    String user = "root";                   
-    	    String password = "0000";
-    	
-    	    String sql = "DELETE FROM reviews WHERE store_id = ?";
+    	    String sql = "DELETE FROM Stores WHERE store_id = ?";
     	    String aftersql = "SELECT * FROM Stores ";
     	    
     	    try {
-    	        Connection conn = DriverManager.getConnection(url, user, password);
+    	        
     	        PreparedStatement pstmt = conn.prepareStatement(sql);
                 Statement stmt = conn.createStatement();
     
@@ -1123,3 +1108,4 @@ public class CakeOrderCombine {
             System.out.println("SQLException : "+sqle);
         }
     }
+}
