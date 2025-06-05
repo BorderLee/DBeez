@@ -1,15 +1,15 @@
-package db_teamproj;
+
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class fin_test {
+public class CakeOrderCombine {
     public static void main(String[] args) {
-        String dbid="cakedb";
+        String dbid="dbeez";
         String userid="root";
-        String passwd="zoe9559";
+        String passwd="jeeinmin2004!!";
         String url="jdbc:mysql://localhost:3306/"+dbid;
 
         try (Connection conn=DriverManager.getConnection(url,userid,passwd)){
@@ -133,9 +133,10 @@ public class fin_test {
         System.out.println("3. Change My Member Information");
         System.out.println("4. View Cake Information with the Rate");
         System.out.println("5. View Store Information with the Rate");
-        System.out.println("6. Delete My Member Information");
-        System.out.println("7. Delete My Reviews");
-        System.out.println("8. Delete My Order");
+        System.out.println("6. View Review by Reviewer Name");
+        System.out.println("7. Delete My Member Information");
+        System.out.println("8. Delete My Reviews");
+        System.out.println("9. Delete My Order");
         System.out.println("-------------------------------");
         System.out.print("Enter your choice: ");
     }
@@ -210,15 +211,19 @@ public class fin_test {
                     // 지점 정보 select 메서드 호출
                     viewStoreInfoCustomer(conn, scanner);
                     break;
-                case 6: // 6. 고객 정보 삭제 기능 - 탈퇴
+                case 6: //6. 리뷰 검색 기능
+                    // 리뷰 검색 select 메서드 호출
+                    viewReviewbyNameCustomer(conn, scanner);
+                    break;
+                case 7: // 6. 고객 정보 삭제 기능 - 탈퇴
                     // 고객 데이터 delete 메서드 호출
                     deleteCustomer(conn, scanner);
                     break;
-                case 7: // 7. 리뷰 삭제 기능
+                case 8: // 7. 리뷰 삭제 기능
                     // 리뷰 데이터 delete 메서드 호출
                     deleteReview(conn, scanner);
                     break;
-                case 8: // 8. 주문 취소 기능 - 이게 구매자 기능이 맞을까요?!
+                case 9: // 8. 주문 취소 기능 - 이게 구매자 기능이 맞을까요?!
                     // 주문 데이터 del3te 메서드 호출
                     deleteOrder(conn, scanner);
                     break;
