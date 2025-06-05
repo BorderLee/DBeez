@@ -519,7 +519,7 @@ public class CakeOrderCombine {
 
     	                  try (ResultSet rs = checkStmt.executeQuery()){ //입력한 ID가 디비에 없을 경우
     	                      if (!rs.next()) {
-    	                          System.out.println("No Name in DB"); //오류문 출력 
+    	                          System.out.println("No ID in DB"); //오류문 출력 
     	                          System.out.println("");
     	                      }
     	                      else {
