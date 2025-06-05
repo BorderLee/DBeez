@@ -54,11 +54,6 @@ public class CakeOrderCombine {
                 System.out.println(); // 메뉴 선택 후 줄바꿈
             }
         }
-        /*catch (SQLException e) {
-            // 데이터베이스 연결 또는 SQL 쿼리 실행 중 오류 발생 시 처리
-            System.err.println("Database error occurred: " + e.getMessage());
-            e.printStackTrace();
-        }*/
          catch (InputMismatchException e) {
             // getUserChoice 메서드에서 잘못된 입력(정수가 아닌 값)을 받았을 때 처리
             System.err.println("Invalid input format. Exiting application.");
@@ -71,10 +66,8 @@ public class CakeOrderCombine {
         finally { // Scanner 자원 해제
             System.out.println("Initiating application shutdown...");
             System.out.println("Database connection automatically closed by try-with-resources.");
-            if (scanner != null) {
-                //scanner.close(); // Close scanner
-                System.out.println("Scanner resources released.");
-            }
+            scanner.close(); // Close scanner
+            System.out.println("Scanner resources released.");
             System.out.println("Application terminated.");
             System.out.println("===============================");
         }
@@ -223,8 +216,8 @@ public class CakeOrderCombine {
                     // 리뷰 데이터 delete 메서드 호출
                     deleteReview(conn, scanner);
                     break;
-                case 9: // 8. 주문 취소 기능 - 이게 구매자 기능이 맞을까요?!
-                    // 주문 데이터 del3te 메서드 호출
+                case 9: // 8. 주문 취소 기능
+                    // 주문 데이터 delete 메서드 호출
                     deleteOrder(conn, scanner);
                     break;
                 default:
@@ -510,24 +503,24 @@ public class CakeOrderCombine {
     public static void updateCustomerInfo(Connection conn, Scanner scanner) {
     	
     		String sql_cus = "UPDATE Customers "
-                    +" SET customer_name = ?, address = ?, phone_number = ?, email = ? WHERE customer_name = ?";
-    		String check_cus = "SELECT * from Customers WHERE customer_name = ?";
-    		String ori_name; 
+                    +" SET customer_name = ?, address = ?, phone_number = ?, email = ? WHERE customer_id = ?";
+    		String check_cus = "SELECT * from Customers WHERE customer_id = ?";
+    		int ori_id;
     		
     		try(PreparedStatement pstmt = conn.prepareStatement(sql_cus)){
     	
     			while(true) { 
-    				System.out.print("~~~Check Your Information~~~\rEnter your name please. (ex: 홍길동)>>");
-    	              ori_name = scanner.nextLine();
+    				System.out.print("~~~Check Your Information~~~\rEnter your ID please. (ex: 3)>>");
+    	              ori_id = scanner.nextInt();
+                      scanner.nextLine();
 
     	              try (PreparedStatement checkStmt = conn.prepareStatement(check_cus)) {
-    	                  checkStmt.setString(1, ori_name);  // 새 이름 기준으로 SELECT
+    	                  checkStmt.setInt(1, ori_id);  // ID 기준으로 SELECT
 
-    	                  try (ResultSet rs = checkStmt.executeQuery()){ //입력한 이름이 디비에 없을 경우
+    	                  try (ResultSet rs = checkStmt.executeQuery()){ //입력한 ID가 디비에 없을 경우
     	                      if (!rs.next()) {
     	                          System.out.println("No Name in DB"); //오류문 출력 
-    	                          System.out.println(""); 
-    	                          continue; //다시 묻기 
+    	                          System.out.println("");
     	                      }
     	                      else {
     	                    	  break; //다음 단계
@@ -560,7 +553,7 @@ public class CakeOrderCombine {
                       pstmt.setString(2, address);
                       pstmt.setString(3, phone_number);
                       pstmt.setString(4, email);
-                      pstmt.setString(5, ori_name);
+                      pstmt.setInt(5, ori_id);
                       pstmt.executeUpdate();  //함수 실행
 
                       conn.commit();
@@ -571,15 +564,15 @@ public class CakeOrderCombine {
                   }
 
                   //터미널 출력
-                  String selectSql = "SELECT * FROM Customers WHERE customer_name = ?";
+                  String selectSql = "SELECT * FROM Customers WHERE customer_id = ?";
                   try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
-                      selectStmt.setString(1, customer_name);  // 새 이름 기준으로 SELECT
+                      selectStmt.setInt(1, ori_id);  // ID 기준으로 SELECT
 
                       try (ResultSet rs = selectStmt.executeQuery()) {
-                          System.out.println("======================================================================================================");
+                          System.out.println("===========================================================================================================");
                           System.out.printf("%-12s| %-15s| %-34s| %-17s| %-30s\n", "customer_id","customer_name","address","phone_number","email"); // 헤더 출력
 
-                          System.out.println("------------------------------------------------------------------------------------------------------");
+                          System.out.println("-----------------------------------------------------------------------------------------------------------");
 
                           while (rs.next()) {
 
@@ -592,7 +585,7 @@ public class CakeOrderCombine {
                                       id,name, addr, phone, em);
 
                           }
-                          System.out.println("======================================================================================================");
+                          System.out.println("===========================================================================================================");
 
                       }catch(SQLException sqle){ //오류 날 경우 처리
                               System.out.println("SQLException : "+sqle);
