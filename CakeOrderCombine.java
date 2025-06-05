@@ -698,11 +698,9 @@ public class CakeOrderCombine {
             }
     
     //delete 이다은
-    //오류나면 sc.close 닫겠습니다
     public static void deleteCake() {
-        Scanner sc = new Scanner(System.in);
         System.out.print("Enter cake ID to delete: ");
-        String input = sc.nextLine();
+        String input = scanner.nextLine();
 
         String url = "jdbc:mysql://localhost:3306/dbeez";  
         String user = "root";                   
@@ -724,30 +722,14 @@ public class CakeOrderCombine {
             } else {
                 System.out.println(input + " doesn't exist!");
             }
-
-            System.out.println("\n--- Current Cakes Table ---");
-            ResultSet rs = stmt.executeQuery(aftersql);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int colCount = rsmd.getColumnCount();
-
-            while (rs.next()) {
-                for (int i = 1; i <= colCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
         } catch (SQLException e) {
             System.out.println("Error occurred. Please try again: " + e.getMessage());
-        } finally {
-            sc.close();
-        }
+        } 
     }
     
 	public static void deleteCustomer() {
-	    Scanner sc = new Scanner(System.in);
 	    System.out.print("Enter customer ID to delete: ");
-	    int input = sc.nextInt();
+	    int input = scanner.nextInt();
 	
 	    String url = "jdbc:mysql://localhost:3306/dbeez";  
 	    String user = "root";                   
@@ -770,27 +752,15 @@ public class CakeOrderCombine {
 	        } else {
 	            System.out.println(input + " don't exist!");
 	        }
-	        System.out.println("\n--- Current Customers Table ---");
-            ResultSet rs = stmt.executeQuery(aftersql);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int colCount = rsmd.getColumnCount();
 
-            while (rs.next()) {
-                for (int i = 1; i <= colCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
 	    } catch (SQLException e) {
 	        System.out.println("Error occured. Please try again: " + e.getMessage());
 	    } 
-		sc.close();
 	}
 
     public static void deleteOrder() {
-	    Scanner sc = new Scanner(System.in);
 	    System.out.print("Enter order number to delete: ");
-	    int input = sc.nextInt();
+	    int input = scanner.nextInt();
 	
 	    String url = "jdbc:mysql://localhost:3306/dbeez";  
 	    String user = "root";                   
@@ -813,27 +783,14 @@ public class CakeOrderCombine {
 	        } else {
 	            System.out.println(input + " don't exist!");
 	        }
-	        System.out.println("\n--- Current Orders Table ---");
-            ResultSet rs = stmt.executeQuery(aftersql);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int colCount = rsmd.getColumnCount();
-
-            while (rs.next()) {
-                for (int i = 1; i <= colCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
 	    } catch (SQLException e) {
 	        System.out.println("Error occured. Please try again: " + e.getMessage());
 	    } 
-		sc.close();
 	}
     
-	public static void deleteReview() {
-	    Scanner sc = new Scanner(System.in);
+	public static void deleteReview() {;
 	    System.out.print("Enter review number to delete: ");
-	    int input = sc.nextInt();
+	    int input = scanner.nextInt();
 	
 	    String url = "jdbc:mysql://localhost:3306/dbeez";  
 	    String user = "root";                   
@@ -856,27 +813,14 @@ public class CakeOrderCombine {
 	        } else {
 	            System.out.println(input + " don't exist!");
 	        }
-	        System.out.println("\n--- Current Reviews Table ---");
-            ResultSet rs = stmt.executeQuery(aftersql);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int colCount = rsmd.getColumnCount();
-
-            while (rs.next()) {
-                for (int i = 1; i <= colCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
 	    } catch (SQLException e) {
 	        System.out.println("Error occured. Please try again: " + e.getMessage());
 	    } 
-		sc.close();
 	}
     
     public static void deleteStore() {
-    	    Scanner sc = new Scanner(System.in);
     	    System.out.print("Enter review store ID delete: ");
-    	    String input = sc.nextLine();
+    	    String input = scanner.nextLine();
     	
     	    String url = "jdbc:mysql://localhost:3306/dbeez";  
     	    String user = "root";                   
@@ -899,21 +843,9 @@ public class CakeOrderCombine {
     	        } else {
     	            System.out.println(input + " don't exist!");
     	        }
-    	        System.out.println("\n--- Current Stores Table ---");
-                ResultSet rs = stmt.executeQuery(aftersql);
-                ResultSetMetaData rsmd = rs.getMetaData();
-                int colCount = rsmd.getColumnCount();
-    
-                while (rs.next()) {
-                    for (int i = 1; i <= colCount; i++) {
-                        System.out.print(rs.getString(i) + "\t");
-                    }
-                    System.out.println();
-                }
     	    } catch (SQLException e) {
     	        System.out.println("Error occured. Please try again: " + e.getMessage());
     	    } 
-    	sc.close();
     }
 
     /**
@@ -1191,120 +1123,3 @@ public class CakeOrderCombine {
             System.out.println("SQLException : "+sqle);
         }
     }
-
-    public static void deleteCustomer(Connection conn, Scanner scanner) {
-        System.out.print("Enter customer ID to delete: ");
-        int customer_id = scanner.nextInt();
-
-        String sql = "DELETE FROM customers WHERE customer_id = ?";
-        
-        try (
-            PreparedStatement pstmt = conn.prepareStatement(sql)
-        ) {
-            pstmt.setInt(1, customer_id);
-            
-            int affectedRows = pstmt.executeUpdate();
-            
-            if (affectedRows > 0) {
-                System.out.println(customer_id + " successfully deleted!");
-            } else {
-                System.out.println(customer_id + " don't exist!");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error occured. Please try again: " + e.getMessage());
-        }
-    }
-
-    public static void deleteCake(Connection conn, Scanner scanner) {
-        System.out.print("Enter cake ID to delete:");
-        int cake_id = scanner.nextInt();               
-
-        String sql = "DELETE FROM cakes WHERE cake_id = ?";
-
-        try (
-            PreparedStatement pstmt = conn.prepareStatement(sql)
-        ) {
-            pstmt.setInt(1, cake_id);
-
-            int affectedRows = pstmt.executeUpdate();
-
-            if (affectedRows > 0) {
-                System.out.println(cake_id + " successfully deleted!");
-            } else {
-                System.out.println(cake_id + " don't exist!");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error occured. Please try again: " + e.getMessage());
-        }
-    }
-
-    public static void deleteReviews(Connection conn, Scanner scanner) {
-        System.out.print("Enter review number to delete:");
-        int review_num = scanner.nextInt();          
-
-        String sql = "DELETE FROM cakes WHERE review_num = ?";
-
-        try (
-            PreparedStatement pstmt = conn.prepareStatement(sql)
-        ) {
-            pstmt.setInt(1, review_num);
-
-            int affectedRows = pstmt.executeUpdate();
-
-            if (affectedRows > 0) {
-                System.out.println(review_num + " successfully deleted!");
-            } else {
-                System.out.println(review_num + " don't exist!");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error occured. Please try again: " + e.getMessage());
-        }
-    }
-
-    public static void deleteOrders(Connection conn, Scanner scanner) {
-        System.out.print("Enter order_num to delete:");
-        int order_num = scanner.nextInt();                  
-
-        String sql = "DELETE FROM cakes WHERE store_id = ?";
-
-        try (
-            PreparedStatement pstmt = conn.prepareStatement(sql)
-        ) {
-            pstmt.setInt(1, order_num);
-
-            int affectedRows = pstmt.executeUpdate();
-
-            if (affectedRows > 0) {
-                System.out.println(order_num + " successfully deleted!");
-            } else {
-                System.out.println(order_num + " don't exist!");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error occured. Please try again: " + e.getMessage());
-        }
-    }
-
-    public static void deleteStores(Connection conn, Scanner scanner) {
-        System.out.print("Enter store_name to delete: ");
-        String store_name = scanner.next();  // 단어 단위 입력. 공백 포함 입력 원하면 nextLine() 사용             
-
-        String sql = "DELETE FROM stores WHERE store_name = ?"; // 테이블명 수정
-
-        try (
-            PreparedStatement pstmt = conn.prepareStatement(sql)
-        ) {
-            pstmt.setString(1, store_name);  // 문자열 바인딩
-
-            int affectedRows = pstmt.executeUpdate();
-
-            if (affectedRows > 0) {
-                System.out.println(store_name + " has successfully deleted!");
-            } else {
-                System.out.println(store_name + " does not exist.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error occured. Please try again: " + e.getMessage());
-        }
-    }
-
-}
