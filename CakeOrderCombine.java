@@ -696,8 +696,225 @@ public class CakeOrderCombine {
                 System.out.println("SQLException : "+sqle);
             	}
             }
-                
+    
+    //delete 이다은
+    //오류나면 sc.close 닫겠습니다
+    public static void deleteCake() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter cake ID to delete: ");
+        String input = sc.nextLine();
 
+        String url = "jdbc:mysql://localhost:3306/dbeez";  
+        String user = "root";                   
+        String password = "0000";
+
+        String sql = "DELETE FROM cakes WHERE cake_id = ?";
+        String aftersql = "SELECT * FROM cakes";
+
+        try (
+            Connection conn = DriverManager.getConnection(url, user, password);
+            PreparedStatement pstmtDelete = conn.prepareStatement(sql);
+            Statement stmt = conn.createStatement()
+        ) {
+            pstmtDelete.setString(1, input);
+            int affectedRows = pstmtDelete.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println(input + " successfully deleted!");
+            } else {
+                System.out.println(input + " doesn't exist!");
+            }
+
+            System.out.println("\n--- Current Cakes Table ---");
+            ResultSet rs = stmt.executeQuery(aftersql);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int colCount = rsmd.getColumnCount();
+
+            while (rs.next()) {
+                for (int i = 1; i <= colCount; i++) {
+                    System.out.print(rs.getString(i) + "\t");
+                }
+                System.out.println();
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error occurred. Please try again: " + e.getMessage());
+        } finally {
+            sc.close();
+        }
+    }
+    
+	public static void deleteCustomer() {
+	    Scanner sc = new Scanner(System.in);
+	    System.out.print("Enter customer ID to delete: ");
+	    int input = sc.nextInt();
+	
+	    String url = "jdbc:mysql://localhost:3306/dbeez";  
+	    String user = "root";                   
+	    String password = "0000";
+	
+	    String sql = "DELETE FROM customers WHERE customer_id = ?";
+	    String aftersql = "SELECT * FROM customers ";
+	    
+	    try {
+	        Connection conn = DriverManager.getConnection(url, user, password);
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+            Statement stmt = conn.createStatement();
+
+	        pstmt.setInt(1, input);
+	        
+	        int affectedRows = pstmt.executeUpdate();
+	        
+	        if (affectedRows > 0) {
+	            System.out.println(input + " successfully deleted!");
+	        } else {
+	            System.out.println(input + " don't exist!");
+	        }
+	        System.out.println("\n--- Current Customers Table ---");
+            ResultSet rs = stmt.executeQuery(aftersql);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int colCount = rsmd.getColumnCount();
+
+            while (rs.next()) {
+                for (int i = 1; i <= colCount; i++) {
+                    System.out.print(rs.getString(i) + "\t");
+                }
+                System.out.println();
+            }
+	    } catch (SQLException e) {
+	        System.out.println("Error occured. Please try again: " + e.getMessage());
+	    } 
+		sc.close();
+	}
+
+    public static void deleteOrder() {
+	    Scanner sc = new Scanner(System.in);
+	    System.out.print("Enter order number to delete: ");
+	    int input = sc.nextInt();
+	
+	    String url = "jdbc:mysql://localhost:3306/dbeez";  
+	    String user = "root";                   
+	    String password = "0000";
+	
+	    String sql = "DELETE FROM orders WHERE order_num = ?";
+	    String aftersql = "SELECT * FROM orders ";
+	    
+	    try {
+	        Connection conn = DriverManager.getConnection(url, user, password);
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+            Statement stmt = conn.createStatement();
+
+	        pstmt.setInt(1, input);
+	        
+	        int affectedRows = pstmt.executeUpdate();
+	        
+	        if (affectedRows > 0) {
+	            System.out.println(input + " successfully deleted!");
+	        } else {
+	            System.out.println(input + " don't exist!");
+	        }
+	        System.out.println("\n--- Current Orders Table ---");
+            ResultSet rs = stmt.executeQuery(aftersql);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int colCount = rsmd.getColumnCount();
+
+            while (rs.next()) {
+                for (int i = 1; i <= colCount; i++) {
+                    System.out.print(rs.getString(i) + "\t");
+                }
+                System.out.println();
+            }
+	    } catch (SQLException e) {
+	        System.out.println("Error occured. Please try again: " + e.getMessage());
+	    } 
+		sc.close();
+	}
+    
+	public static void deleteReview() {
+	    Scanner sc = new Scanner(System.in);
+	    System.out.print("Enter review number to delete: ");
+	    int input = sc.nextInt();
+	
+	    String url = "jdbc:mysql://localhost:3306/dbeez";  
+	    String user = "root";                   
+	    String password = "0000";
+	
+	    String sql = "DELETE FROM reviews WHERE review_num = ?";
+	    String aftersql = "SELECT * FROM reviews ";
+	    
+	    try {
+	        Connection conn = DriverManager.getConnection(url, user, password);
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+            Statement stmt = conn.createStatement();
+
+	        pstmt.setInt(1, input);
+	        
+	        int affectedRows = pstmt.executeUpdate();
+	        
+	        if (affectedRows > 0) {
+	            System.out.println(input + " successfully deleted!");
+	        } else {
+	            System.out.println(input + " don't exist!");
+	        }
+	        System.out.println("\n--- Current Reviews Table ---");
+            ResultSet rs = stmt.executeQuery(aftersql);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int colCount = rsmd.getColumnCount();
+
+            while (rs.next()) {
+                for (int i = 1; i <= colCount; i++) {
+                    System.out.print(rs.getString(i) + "\t");
+                }
+                System.out.println();
+            }
+	    } catch (SQLException e) {
+	        System.out.println("Error occured. Please try again: " + e.getMessage());
+	    } 
+		sc.close();
+	}
+    
+    public static void deleteStore() {
+    	    Scanner sc = new Scanner(System.in);
+    	    System.out.print("Enter review store ID delete: ");
+    	    String input = sc.nextLine();
+    	
+    	    String url = "jdbc:mysql://localhost:3306/dbeez";  
+    	    String user = "root";                   
+    	    String password = "0000";
+    	
+    	    String sql = "DELETE FROM reviews WHERE store_id = ?";
+    	    String aftersql = "SELECT * FROM Stores ";
+    	    
+    	    try {
+    	        Connection conn = DriverManager.getConnection(url, user, password);
+    	        PreparedStatement pstmt = conn.prepareStatement(sql);
+                Statement stmt = conn.createStatement();
+    
+    	        pstmt.setString(1, input);
+    	        
+    	        int affectedRows = pstmt.executeUpdate();
+    	        
+    	        if (affectedRows > 0) {
+    	            System.out.println(input + " successfully deleted!");
+    	        } else {
+    	            System.out.println(input + " don't exist!");
+    	        }
+    	        System.out.println("\n--- Current Stores Table ---");
+                ResultSet rs = stmt.executeQuery(aftersql);
+                ResultSetMetaData rsmd = rs.getMetaData();
+                int colCount = rsmd.getColumnCount();
+    
+                while (rs.next()) {
+                    for (int i = 1; i <= colCount; i++) {
+                        System.out.print(rs.getString(i) + "\t");
+                    }
+                    System.out.println();
+                }
+    	    } catch (SQLException e) {
+    	        System.out.println("Error occured. Please try again: " + e.getMessage());
+    	    } 
+    	sc.close();
+    }
 
     /**
      * 판매자 - 특정 가게의 전체 주문 목록을 조회하고 콘솔에 출력하는 메서드
