@@ -1,6 +1,6 @@
 CREATE TABLE Cakes (
   cake_id 			CHAR(3) PRIMARY KEY,
-  cake_name 		VARCHAR(100),
+  cake_name 		VARCHAR(100) UNIQUE,
   price 			INT
 );
 
