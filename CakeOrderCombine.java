@@ -700,12 +700,10 @@ public class CakeOrderCombine {
         System.out.print("Enter cake ID to delete: ");
         String input = scanner.nextLine();
         String sql = "DELETE FROM Cakes WHERE cake_id = ?";
-        String aftersql = "SELECT * FROM cakes";
 
         try {
            
             PreparedStatement pstmtDelete = conn.prepareStatement(sql);
-            Statement stmt = conn.createStatement();
         
             pstmtDelete.setString(1, input);
             int affectedRows = pstmtDelete.executeUpdate();
@@ -725,15 +723,11 @@ public class CakeOrderCombine {
 	public static void deleteCustomer(Connection conn, Scanner scanner) {
 	    System.out.print("Enter customer ID to delete: ");
 	    int input = scanner.nextInt();
-	
-	
 	    String sql = "DELETE FROM Customers WHERE customer_id = ?";
-	    String aftersql = "SELECT * FROM customers ";
 	    
 	    try {
 	       
 	        PreparedStatement pstmt = conn.prepareStatement(sql);
-            Statement stmt = conn.createStatement();
 
 	        pstmt.setInt(1, input);
 	        
@@ -753,16 +747,11 @@ public class CakeOrderCombine {
 	public static void deleteOrder(Connection conn, Scanner scanner) {
 	    System.out.print("Enter order number to delete: ");
 	    int input = scanner.nextInt();
-	
-	
 	    String sql = "DELETE FROM Orders WHERE order_num = ?";
-	    String aftersql = "SELECT * FROM orders ";
 	    
 	    try {
 	      
 	        PreparedStatement pstmt = conn.prepareStatement(sql);
-            Statement stmt = conn.createStatement();
-
 	        pstmt.setInt(1, input);
 	        
 	        int affectedRows = pstmt.executeUpdate();
@@ -780,18 +769,12 @@ public class CakeOrderCombine {
 	public static void deleteReview(Connection conn, Scanner scanner) {;
 	    System.out.print("Enter review number to delete: ");
 	    int input = scanner.nextInt();
-	
-	  
-	
 	    String sql = "DELETE FROM reviews WHERE review_num = ?";
-	    String aftersql = "SELECT * FROM reviews ";
 	    
 	    try {
 
 	        PreparedStatement pstmt = conn.prepareStatement(sql);
-            Statement stmt = conn.createStatement();
-
-	        pstmt.setInt(1, input);
+		pstmt.setInt(1, input);
 	        
 	        int affectedRows = pstmt.executeUpdate();
 	        
@@ -808,15 +791,11 @@ public class CakeOrderCombine {
 	public static void deleteStore(Connection conn, Scanner scanner) {
     	    System.out.print("Enter review store ID delete: ");
     	    String input = scanner.nextLine();
-    	
     	    String sql = "DELETE FROM Stores WHERE store_id = ?";
-    	    String aftersql = "SELECT * FROM Stores ";
     	    
     	    try {
     	        
     	        PreparedStatement pstmt = conn.prepareStatement(sql);
-                Statement stmt = conn.createStatement();
-    
     	        pstmt.setString(1, input);
     	        
     	        int affectedRows = pstmt.executeUpdate();
