@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+
 -- 고객
 INSERT INTO Customers (customer_id, customer_name, address, phone_number, email) VALUES
 (1, '김민준', '서울시 강남구 테헤란로 123', '010-1111-2222', 'kim.mj@example.com'),
