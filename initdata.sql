@@ -55,7 +55,8 @@ INSERT INTO Orders (order_num, order_date, customer_id, cake_id, store_id, price
 (00010, '2025-01-10', 10, '010', 'DJ001', 34500),
 (00011, '2025-01-11', 3, '001', 'US001', 35000),
 (00012, '2025-01-11', 3, '006', 'US001', 25000),
-(00013, '2025-01-11', 3, '007', 'US001', 28000);
+(00013, '2025-01-11', 3, '007', 'US001', 28000),
+(00014, '2025-01-15', 10, '003', 'DJ001', 27000);
 
 -- 리뷰
 INSERT INTO Reviews (review_num, customer_id, review_rate, cake_id, order_num, store_id) VALUES
