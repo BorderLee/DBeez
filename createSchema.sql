@@ -65,5 +65,5 @@ GROUP BY c.cake_id;
 
 -- view (customer_name으로 리뷰 조회: 구매자, 케이크명, 별점 나오도록)
 CREATE VIEW review_info AS
-SELECT cus.customer_name, r.review_rate, cake.cake_name, s.store_name
+SELECT cus.customer_name, r.review_num, r.review_rate, cake.cake_name, s.store_name
 FROM Reviews r JOIN Customers cus ON r.customer_id=cus.customer_id JOIN Cakes cake ON r.cake_id=cake.cake_id JOIN Stores s ON r.store_id=s.store_id;
