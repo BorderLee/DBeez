@@ -8,7 +8,7 @@ public class CakeOrderCombine {
         String dbid="dbeez";
         String userid="root";
         String passwd="jeeinmin2004!!";
-        String url="jdbc:mysql://localhost:3306/"+dbid;
+        String url="jdbc:mysql://localhost:3306/"+dbid+"?useUnicode=true&characterEncoding=UTF-8";
 
         try (Connection conn=DriverManager.getConnection(url,userid,passwd)){
             // 서비스 시작
@@ -506,7 +506,7 @@ public class CakeOrderCombine {
     		int ori_id;
     		
     		try(PreparedStatement pstmt = conn.prepareStatement(sql_cus)){
-    	
+
     			while(true) {
                     System.out.println("[Change My Member Information]\n");
     				System.out.print("~~~Check Your Information~~~\rEnter your ID please. (ex: 3) : ");
@@ -1062,25 +1062,26 @@ public class CakeOrderCombine {
             ResultSet review_check=pstmt.executeQuery();
             boolean found=false;
 
-            System.out.println("=============================================================");
-            System.out.printf(" %-15s | %-20s | %-3s | %-15s\n", "Customer Name", "Cake Name","Rating","Store Name");
-            System.out.println("-------------------------------------------------------------");
+            System.out.println("===========================================================================");
+            System.out.printf(" %-7s | %-15s | %-20s | %-3s | %-15s\n","Review Num","Customer Name", "Cake Name","Rating","Store Name");
+            System.out.println("---------------------------------------------------------------------------");
 
             while(review_check.next()){
                 if(review_check.getString("customer_name").equals(inputName))
                     found=true; //inputName에 매칭되는 customer_name을 찾으면 found.
 
+                String reviewNum=review_check.getString("review_num");
                 String customerName=review_check.getString("customer_name");
                 String cakeName=review_check.getString("cake_name");
                 double rating=review_check.getDouble("review_rate");
                 String storeName=review_check.getString("store_name");
-                System.out.printf(" %-12s | %-20s | %6.1f | %-15s\n", customerName,cakeName,rating,storeName); //customer name, cake name, rating, store name 출력
+                System.out.printf(" %-10s | %-12s | %-20s | %6.1f | %-15s\n", reviewNum,customerName,cakeName,rating,storeName); //customer name, cake name, rating, store name 출력
 
             }
             if(!found){ //inputName에 매칭되는 customer_name을 찾지 못했다면
                 System.out.println("Sorry, there are no reviews written by this customer.");
             }
-            System.out.println("=============================================================");
+            System.out.println("===========================================================================");
 
         }
         catch(SQLException sqle){ //오류 날 경우 처리
