@@ -507,8 +507,9 @@ public class CakeOrderCombine {
     		
     		try(PreparedStatement pstmt = conn.prepareStatement(sql_cus)){
     	
-    			while(true) { 
-    				System.out.print("~~~Check Your Information~~~\rEnter your ID please. (ex: 3)>>");
+    			while(true) {
+                    System.out.println("[Change My Member Information]\n");
+    				System.out.print("~~~Check Your Information~~~\rEnter your ID please. (ex: 3) : ");
     	              ori_id = scanner.nextInt();
                       scanner.nextLine();
 
@@ -530,18 +531,18 @@ public class CakeOrderCombine {
     			}
                   
                 //업데이트 시작 
-                  System.out.println("~~~Updating starts. Please enter your new information.~~~\r\n");
+                  System.out.println("\n~~~Updating starts. Please enter your new information.~~~\r\n");
 
-                  System.out.print("Enter your NEW NAME please. (ex: 홍길동) >>");
+                  System.out.print("Enter your NEW NAME please. (ex: 홍길동) : ");
                   String customer_name = scanner.nextLine();
 
-                  System.out.print("Enter your NEW ADDRESS please. (공백 허용) >>");
+                  System.out.print("Enter your NEW ADDRESS please. (공백 허용) : ");
                   String address = scanner.nextLine();
 
-                  System.out.print("Enter your NEW PHONE NUMBER please. (ex: 000-0000-0000) >>");
+                  System.out.print("Enter your NEW PHONE NUMBER please. (ex: 000-0000-0000) : ");
                   String phone_number = scanner.nextLine();
 
-                  System.out.print("Enter your NEW EMAIL please. (ex: aa@gmail.com) >>");
+                  System.out.print("Enter your NEW EMAIL please. (ex: aa@gmail.com) : ");
                   String email = scanner.nextLine();
 
                   //내용 update(변경) sql
@@ -611,7 +612,8 @@ public class CakeOrderCombine {
             	
             	
             	while(true) {
-            		System.out.print("~~~Check Cake Information~~~\rEnter CAKE NAME please. (ex: Chocolate Cake) >>");
+                    System.out.println("[Change Information of a Cake]\n");
+            		System.out.print("~~~Check Cake Information~~~\rEnter CAKE NAME please. (ex: Chocolate Cake) : ");
                     ori_name = scanner.nextLine();
 
     	              try (PreparedStatement checkStmt = conn.prepareStatement(check_cake)) {
@@ -634,12 +636,12 @@ public class CakeOrderCombine {
                 	              
                     //케이크 정보 변경 인풋 받기
 
-                        System.out.println("~~~Updating starts. Please enter your new information.~~~\r\n");
+                        System.out.println("\n~~~Updating starts. Please enter your new information.~~~\r\n");
 
-                        System.out.print("Enter NEW CAKE NAME please. (ex: Cheese Cake) >>");
+                        System.out.print("Enter NEW CAKE NAME please. (ex: Cheese Cake) : ");
                         String cake_name = scanner.nextLine();
 
-                        System.out.print("Enter NEW CAKE PRICE please. (ex: 10000) >>");
+                        System.out.print("Enter NEW CAKE PRICE please. (ex: 10000) : ");
                         int price = scanner.nextInt();
                         scanner.nextLine();
 
